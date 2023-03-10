@@ -4,13 +4,18 @@
   import CardBarChart from "../../components/Cards/CardBarChart.svelte";
   import CardPageVisits from "../../components/Cards/CardPageVisits.svelte";
   import CardSocialTraffic from "../../components/Cards/CardSocialTraffic.svelte";
+  import AllHeader from "../../components/Headers/AllHeader.svelte";
   import Sidebar from "../../components/Sidebar/Sidebar.svelte";
-
+  import AdminNavbar from "../../components/Navbars/AdminNavbar.svelte";
 </script>
 
 <div>
-  <!-- <AllHeader/> -->
   <Sidebar/>
+  <div class="relative md:ml-64 bg-blueGray-100">
+		<AdminNavbar />
+    <AllHeader/>
+		<div class="px-4 md:px-10 mx-auto w-full -m-24">
+	
   <div class="flex flex-wrap">
     <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
       <CardLineChart />
@@ -27,4 +32,6 @@
       <CardSocialTraffic />
     </div>
   </div>
+</div>
+</div>
 </div>

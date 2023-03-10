@@ -1,8 +1,8 @@
-<div>
+<div class="mt-10">
     <div>
         <div class="flex flex-col md:mx-6 lg:mx-6">
             <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
-                <div class="inline-block min-w-full py-2 ">
+                <div class="inline-block min-w-full ">
                     <div class="overflow-hidden">
                         <table class="min-w-full text-left text-sm font-light">
                             <thead class="border-b font-medium dark:border-neutral-500">
