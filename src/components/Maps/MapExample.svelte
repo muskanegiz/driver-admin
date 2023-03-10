@@ -1,6 +1,6 @@
 <head>
   <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1b4u7lMJ9F0jc-n1L47XMfCBBQQM3r10&callback=initMap&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXX&callback=initMap&v=weekly"
         defer></script>
   <script>
       function initMap() {
