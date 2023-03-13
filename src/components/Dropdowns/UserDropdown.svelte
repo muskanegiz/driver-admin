@@ -5,7 +5,10 @@
   // core components
 
   import image from "$lib/images/team-1-800x800.jpg";
-
+  function logout(){
+    localStorage.clear();
+    console.log("logout");
+  }
   let dropdownPopoverShow = false;
 
   let btnDropdownRef;
@@ -64,6 +67,12 @@
       class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
     >
       Something else here
+    </a>
+    <a
+      href="/auth/login" on:click={()=>{logout()}}
+      class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+    >
+     Logout
     </a>
     <div class="h-0 my-2 border border-solid border-blueGray-100" />
     <a
