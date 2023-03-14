@@ -11,6 +11,7 @@
 	if(authToken == null) {	
 		goto('/auth/login');
 	}
+    
 </script>
 
 <div class="app">

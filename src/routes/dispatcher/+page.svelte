@@ -4,11 +4,10 @@
     import MapExample from "../../components/Maps/MapExample.svelte";
     import DispatcherNavbar from "../../components/Navbars/DispatcherNavbar.svelte";
     import Header from "../../components/Headers/HeaderStats.svelte";
+    import { setContext } from "svelte";
     export let data;
     let {products } = data;
-    console.log(products);
-    let lon = products[0].pickup_address.longitude;
-    console.log(lon);
+    setContext("user",data);
 </script>
     <Sidebar></Sidebar>
     <div class="relative md:ml-64 bg-blueGray-100">
@@ -16,8 +15,7 @@
         <Header/>
 		<div class="px-4 md:px-10 mx-auto w-full -m-24">
             <Filter/>   
-            <MapExample />     
-            {#each products as plans}                
+            <MapExample /> 
                 <div class="mt-10">
                     <div>
                         <div class="flex flex-col md:mx-6 lg:mx-6">
@@ -46,7 +44,9 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                                {#each products as plans} 
                                                 <tr class="border-b dark:border-neutral-500">
+                                                  
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
                                                         <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
@@ -56,13 +56,6 @@
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
-
-                                                        <!-- <select name="pickupSource">
-                                                            <option value="Kent">Ken *</option>
-                                                            <option value="Drew">Drew</option>
-                                                            <option value="MAC1">MAC1</option>
-                                                            <option value="EW">E/W *</option>
-                                                        </select> -->
                                                     </td>
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
                                                     <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
@@ -100,6 +93,8 @@
                                                         <a href={"#"}><input type="checkbox" class="ml-6"/></a>
                                                     </td>
                                                 </tr>
+                                                {/each}
+
                                             </tbody>
                                             <tr>
                                                 <td colspan="14" style="text-align:center;">
@@ -113,6 +108,5 @@
                         </div>
                     </div>
                 </div>
-            {/each}
         </div>
     </div>
