@@ -6,17 +6,27 @@
     import Header from "../../components/Headers/HeaderStats.svelte";
     import { setContext } from "svelte";
     export let data;
+    let filteredData;
     let {products } = data;
     setContext("user",data);
+    console.log("alldata::",data);
+    let texts= "";
+    var showData = 'all';
+    // @ts-ignore
+    function handleMessage(event) {
+        texts= event.detail.text 
+      
+        console.log("dispatcher::",texts);
+	}
 </script>
     <Sidebar></Sidebar>
     <div class="relative md:ml-64 bg-blueGray-100">
 		<DispatcherNavbar />
         <Header/>
 		<div class="px-4 md:px-10 mx-auto w-full -m-24">
-            <Filter/>   
-            <MapExample /> 
-                <div class="mt-10">
+            <Filter on:message={handleMessage}/>   
+            <!-- <MapExample />  -->
+            <div class="mt-10">
                     <div>
                         <div class="flex flex-col md:mx-6 lg:mx-6">
                             <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
@@ -44,59 +54,115 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                {#each products as plans} 
-                                                <tr class="border-b dark:border-neutral-500">
-                                                  
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                        <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                        <select name="drive1-1">
-                                                            <option value="3rd P" selected>3rd P</option>
-                                                            <option value="Kent">Ken</option>
-                                                            <option value="Drew">Drew</option>
-                                                            <option value="MAC1">MAC1</option>
-                                                            <option value="Pool">Pool</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                        <select name="drive1-2">
-                                                            <option value="3rd P">3rd P</option>
-                                                            <option value="Kent">Ken</option>
-                                                            <option value="Drew">Drew</option>
-                                                            <option value="MAC1">MAC1</option>
-                                                            <option value="Pool">Pool</option>
-                                                            <option value="None" selected>None</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                        <select name="drive1-3">
-                                                            <option value="3rd P">3rd P</option>
-                                                            <option value="Kent">Ken</option>
-                                                            <option value="Drew">Drew</option>
-                                                            <option value="MAC1">MAC1</option>
-                                                            <option value="Pool">Pool</option>
-                                                            <option value="None" selected>None</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                        <a href={"#"}><input type="checkbox" class="ml-6"/></a>
-                                                    </td>
-                                                </tr>
-                                                {/each}
-
-                                            </tbody>
-                                            <tr>
+                                                {#if texts.length === 0}
+                                                    {#each products as plans} 
+                                                        <tr class="border-bdark:border-neutral-500">                                          
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                    <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                    <select name="drive1-1">
+                                                                        <option value="3rd P" selected>3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                    <select name="drive1-2">
+                                                                        <option value="3rd P">3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                        <option value="None" selected>None</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                    <select name="drive1-3">
+                                                                        <option value="3rd P">3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                        <option value="None" selected>None</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                    <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                                </td>
+                                                            </tr>
+                                                    {/each}
+                                                {:else}
+                                                {#each texts as text}
+                                                    {#each products as plans} 
+                                                        {#if text == plans.delivery}
+                                                            <tr class="border-b dark:border-neutral-500">                                          
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                        <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
+                                                                    </td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
+                                                                    </td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                        <select name="drive1-1">
+                                                                            <option value="3rd P" selected>3rd P</option>
+                                                                            <option value="Kent">Ken</option>
+                                                                            <option value="Drew">Drew</option>
+                                                                            <option value="MAC1">MAC1</option>
+                                                                            <option value="Pool">Pool</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                        <select name="drive1-2">
+                                                                            <option value="3rd P">3rd P</option>
+                                                                            <option value="Kent">Ken</option>
+                                                                            <option value="Drew">Drew</option>
+                                                                            <option value="MAC1">MAC1</option>
+                                                                            <option value="Pool">Pool</option>
+                                                                            <option value="None" selected>None</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                        <select name="drive1-3">
+                                                                            <option value="3rd P">3rd P</option>
+                                                                            <option value="Kent">Ken</option>
+                                                                            <option value="Drew">Drew</option>
+                                                                            <option value="MAC1">MAC1</option>
+                                                                            <option value="Pool">Pool</option>
+                                                                            <option value="None" selected>None</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                        <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                                    </td>
+                                                                </tr>
+                                                        
+                                                        {/if}
+                                                        
+                                                    {/each}
+                                                {/each}  
+                                                {/if}                                        
+                                           </tbody>
+                                            <tr>                                          
                                                 <td colspan="14" style="text-align:center;">
                                                     <input class="text-black bg-gray-300 mt-2 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded" type="submit" value="Dispatch Selected Orders" />
                                                 </td>
@@ -107,6 +173,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
         </div>
     </div>
+
+
