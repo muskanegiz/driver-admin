@@ -7,14 +7,13 @@
     import DispatcherNavbar from "../../components/Navbars/DispatcherNavbar.svelte";
     import Header from "../../components/Headers/HeaderStats.svelte";
     import { setContext } from "svelte";
-    import { exclude_internal_props } from "svelte/internal";
     export let data;
     let {products } = data;
     setContext("user",data);
-    let texts= "";
+    let filter= "";
     // @ts-ignore
     function handleMessage(event) {
-        texts= event.detail.text 
+        filter= event.detail.text 
 	}
     let no= ""
     // @ts-ignore
@@ -23,11 +22,9 @@
      */
     let orderDetail= [];
     // @ts-ignore
-    function select(orderid){
+    function detail(orderid){
         no = orderid;
         show= true;
-        let check = document.getElementsByClassName("select") ;
-        check.checked = true;
         // @ts-ignore
         for(let i=0;i<=data.products.length;i++)
         {
@@ -36,7 +33,8 @@
                 orderDetail = data.products[i]
                 return true;
             }     
-        }   
+        } 
+          
        
     }
     let show = false;
@@ -76,10 +74,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {#if texts.length === 0}
+                                            {#if filter.length === 0}
                                                 {#each products as plans} 
                                                     <tr class="border-bdark:border-neutral-500">                                          
-                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" ><input type="checkbox" class="select" on:click={()=>{select(plans.orderid)}}
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" ><input type="checkbox" class="select" id="selected" on:click={()=>{detail(plans.orderid)}}
                                                             /></td>
                                                         <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
                                                             <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
@@ -128,11 +126,11 @@
                                                     </tr>
                                                 {/each}
                                             {:else}
-                                                {#each texts as text}
+                                                {#each filter as filters}
                                                     {#each products as plans} 
-                                                        {#if text == plans.delivery}
+                                                        {#if filters == plans.delivery}
                                                             <tr class="border-b dark:border-neutral-500">                                          
-                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox"  on:click={()=>{select(plans.orderid)}} /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox"  on:click={()=>{detail(plans.orderid)}} /></td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" id={plans.orderno}>
                                                                     <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
                                                                 </td>
