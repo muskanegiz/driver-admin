@@ -1,23 +1,45 @@
 <script>
+// @ts-nocheck
+
     import Filter from "../../components/Filter/Filter.svelte";
     import Sidebar from "../../components/Sidebar/Sidebar.svelte";
     import MapExample from "../../components/Maps/MapExample.svelte";
     import DispatcherNavbar from "../../components/Navbars/DispatcherNavbar.svelte";
     import Header from "../../components/Headers/HeaderStats.svelte";
     import { setContext } from "svelte";
+    import { exclude_internal_props } from "svelte/internal";
     export let data;
-    let filteredData;
     let {products } = data;
     setContext("user",data);
-    console.log("alldata::",data);
     let texts= "";
-    var showData = 'all';
     // @ts-ignore
     function handleMessage(event) {
         texts= event.detail.text 
-      
-        console.log("dispatcher::",texts);
 	}
+    let no= ""
+    // @ts-ignore
+    /**
+     * @type {any[]}
+     */
+    let orderDetail= [];
+    // @ts-ignore
+    function select(orderid){
+        no = orderid;
+        show= true;
+        let check = document.getElementsByClassName("select") ;
+        check.checked = true;
+        // @ts-ignore
+        for(let i=0;i<=data.products.length;i++)
+        {
+            if(data.products[i].orderid === orderid)
+            {
+                orderDetail = data.products[i]
+                return true;
+            }     
+        }   
+       
+    }
+    let show = false;
 </script>
     <Sidebar></Sidebar>
     <div class="relative md:ml-64 bg-blueGray-100">
@@ -25,16 +47,16 @@
         <Header/>
 		<div class="px-4 md:px-10 mx-auto w-full -m-24">
             <Filter on:message={handleMessage}/>   
-            <!-- <MapExample />  -->
+            <MapExample /> 
             <div class="mt-10">
-                    <div>
-                        <div class="flex flex-col md:mx-6 lg:mx-6">
-                            <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
-                                <div class="inline-block min-w-full ">
-                                    <div class="overflow-hidden">
-                                        <table class="min-w-full text-left text-sm font-light">
-                                            <thead class="border-b font-medium dark:border-neutral-500">
-                                                <tr class="text-black ">
+                <div>
+                    <div class="flex flex-col md:mx-6 lg:mx-6">
+                        <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
+                            <div class="inline-block min-w-full ">
+                                <div class="overflow-hidden">
+                                    <table class="min-w-full text-left text-sm font-light">
+                                        <thead class="border-b font-medium dark:border-neutral-500">
+                                            <tr class="text-black ">
                                                 <th scope="col" class="px-3 py-2">Select</th>
                                                 <th scope="col" class="px-3 py-2">Order</th>
                                                 <th scope="col" class="px-3 py-2">Placed</th>
@@ -52,13 +74,66 @@
                                                     <input class="text-black bg-gray-300 mt-3 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded" type="submit" value="Requote"/>
                                                 </th>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                                {#if texts.length === 0}
+                                        </thead>
+                                        <tbody>
+                                            {#if texts.length === 0}
+                                                {#each products as plans} 
+                                                    <tr class="border-bdark:border-neutral-500">                                          
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" ><input type="checkbox" class="select" on:click={()=>{select(plans.orderid)}}
+                                                            /></td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                            <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
+                                                        </td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
+                                                        </td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                            <select name="drive1-1">
+                                                                <option value="3rd P" selected>3rd P</option>
+                                                                <option value="Kent">Ken</option>
+                                                                <option value="Drew">Drew</option>
+                                                                <option value="MAC1">MAC1</option>
+                                                                <option value="Pool">Pool</option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                            <select name="drive1-2">
+                                                                <option value="3rd P">3rd P</option>
+                                                                <option value="Kent">Ken</option>
+                                                                <option value="Drew">Drew</option>
+                                                                <option value="MAC1">MAC1</option>
+                                                                <option value="Pool">Pool</option>
+                                                                <option value="None" selected>None</option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                            <select name="drive1-3">
+                                                                <option value="3rd P">3rd P</option>
+                                                                <option value="Kent">Ken</option>
+                                                                <option value="Drew">Drew</option>
+                                                                <option value="MAC1">MAC1</option>
+                                                                <option value="Pool">Pool</option>
+                                                                <option value="None" selected>None</option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                            <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                        </td>
+                                                    </tr>
+                                                {/each}
+                                            {:else}
+                                                {#each texts as text}
                                                     {#each products as plans} 
-                                                        <tr class="border-bdark:border-neutral-500">                                          
-                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
-                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                        {#if text == plans.delivery}
+                                                            <tr class="border-b dark:border-neutral-500">                                          
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox"  on:click={()=>{select(plans.orderid)}} /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" id={plans.orderno}>
                                                                     <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
                                                                 </td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
@@ -101,67 +176,100 @@
                                                                 </td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
                                                                     <a href={"#"}><input type="checkbox" class="ml-6"/></a>
-                                                                </td>
+                                                                </td>                                                                  
                                                             </tr>
-                                                    {/each}
-                                                {:else}
-                                                {#each texts as text}
-                                                    {#each products as plans} 
-                                                        {#if text == plans.delivery}
-                                                            <tr class="border-b dark:border-neutral-500">                                          
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="checkbox" /></td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                                        <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                                        <select name="drive1-1">
-                                                                            <option value="3rd P" selected>3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                                        <select name="drive1-2">
-                                                                            <option value="3rd P">3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                            <option value="None" selected>None</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                                        <select name="drive1-3">
-                                                                            <option value="3rd P">3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                            <option value="None" selected>None</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                                        <a href={"#"}><input type="checkbox" class="ml-6"/></a>
-                                                                    </td>
-                                                                </tr>
-                                                        
-                                                        {/if}
-                                                        
+                                                        {/if}     
                                                     {/each}
                                                 {/each}  
-                                                {/if}                                        
-                                           </tbody>
+                                            {/if}                                        
+                                       </tbody>
+                                        <tr>                                          
+                                            <td colspan="14" style="text-align:center;">
+                                                <input class="text-black bg-gray-300 mt-2 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded" type="submit" value="Dispatch Selected Orders" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            {#if show}
+                <div class="mt-10">
+                    <div>
+                        <div class="flex flex-col md:mx-6 lg:mx-6">
+                            <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
+                                <div class="inline-block min-w-full ">
+                                    <div class="overflow-hidden">
+                                        <table class="min-w-full text-left text-sm font-light">
+                                            <thead class="border-b font-medium dark:border-neutral-500">
+                                                <tr class="text-black ">
+                                                    <th scope="col" class="px-3 py-2">Order</th>
+                                                    <th scope="col" class="px-3 py-2">Placed</th>
+                                                    <th scope="col" class="px-3 py-2">Due</th>
+                                                    <th scope="col" class="px-3 py-2">Items</th>
+                                                    <th scope="col" class="px-3 py-2">Del+Tip</th>
+                                                    <th scope="col" class="px-3 py-2">Loc</th>
+                                                    <th scope="col" class="px-3 py-2">Market</th>
+                                                    <th scope="col" class="px-3 py-2">Mkt Tip</th>
+                                                    <th scope="col" class="px-3 py-2">Int Offer</th>
+                                                    <th scope="col" class="px-3 py-2">1st</th>
+                                                    <th scope="col" class="px-3 py-2">2nd</th>
+                                                    <th scope="col" class="px-3 py-2">3rd</th>
+                                                    <th scope="col" class="">
+                                                        <input class="text-black bg-gray-300 mt-3 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded" type="submit" value="Requote"/>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                        <tr class="border-bdark:border-neutral-500">                                        
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{orderDetail.orderno}</a>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{orderDetail.createdon}</td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {orderDetail.pickup_address.city}                                                
+                                                             </td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.25</td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="text" size="4" /></td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                <select name="drive1-1">
+                                                                    <option value="3rd P" selected>3rd P</option>
+                                                                    <option value="Kent">Ken</option>
+                                                                    <option value="Drew">Drew</option>
+                                                                    <option value="MAC1">MAC1</option>
+                                                                    <option value="Pool">Pool</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                <select name="drive1-2">
+                                                                    <option value="3rd P">3rd P</option>
+                                                                    <option value="Kent">Ken</option>
+                                                                    <option value="Drew">Drew</option>
+                                                                    <option value="MAC1">MAC1</option>
+                                                                    <option value="Pool">Pool</option>
+                                                                    <option value="None" selected>None</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                <select name="drive1-3">
+                                                                    <option value="3rd P">3rd P</option>
+                                                                    <option value="Kent">Ken</option>
+                                                                    <option value="Drew">Drew</option>
+                                                                    <option value="MAC1">MAC1</option>
+                                                                    <option value="Pool">Pool</option>
+                                                                    <option value="None" selected>None</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
+                                                                <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                            </td>
+                                                        </tr> 
+                                        </tbody>
                                             <tr>                                          
                                                 <td colspan="14" style="text-align:center;">
                                                     <input class="text-black bg-gray-300 mt-2 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded" type="submit" value="Dispatch Selected Orders" />
@@ -172,8 +280,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-            </div>
+                    </div>    
+                </div>
+            {/if}
+          
         </div>
     </div>
 
