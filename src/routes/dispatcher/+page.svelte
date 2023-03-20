@@ -48,7 +48,7 @@
                 <div>
                     <div class="flex flex-col md:mx-6 lg:mx-6">
                         <div class="overflow-x-auto  sm:-mx-6 lg:-mx-6">
-                            <div class="inline-block min-w-full mb-5 ">
+                            <div class="inline-block min-w-full mb-5">
                                 <div class="overflow-hidden">
                                     <table class="min-w-full text-left text-sm font-light">
                                         <thead class="border-b font-medium dark:border-neutral-500">
@@ -93,7 +93,8 @@
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$30.00</td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
-                                                                </td>                                                                                  
+                                                                </td>
+                                                                                                                                -->
                                                             </tr>
                                                         {/if}     
                                                     {/each}
@@ -174,29 +175,29 @@
                                 </div>
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-2">
-                                <div class="w-full md:w-1/2 px-2  md:mb-0">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="tip">
                                     MKT Tip
                                     </label>
-                                    <input class="appearance-none block bg-gray-200  w-64 text-gray-700 border border-black-500 rounded mb-3 focus:outline-none focus:bg-white" id="tip" type="text">
+                                    <input class="appearance-none block bg-gray-200  w-64 text-gray-700 border border-red-500 rounded mb-3  focus:outline-none focus:bg-white" id="tip" type="text">
                                 </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-16 mb-6 ">
                             <div class="flex flex-wrap -mx-3 mb-2">
-                                <div class="w-full md:w-1/2 px-2  md:mb-0 ">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0 ">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="offer">
                                         Int Offer
                                     </label>
-                                    <input class="appearance-none block bg-gray-200 w-64 text-gray-700 border border-black-500 rounded mb-3  focus:outline-none focus:bg-white" id="offer" type="text">
+                                    <input class="appearance-none block bg-gray-200 w-64 text-gray-700 border border-red-500 rounded mb-3  focus:outline-none focus:bg-white" id="offer" type="text">
                                 </div>
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-2">
-                                <div class="w-full md:w-1/2 px-2 md:mb-0">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Ist">
                                         Ist
                                     </label>
-                                    <select class="appearance-none block bg-gray-200 w-64 text-gray-700 border border-black-500 rounded mb-3 focus:outline-none focus:bg-white" id="Ist" type="text" >
+                                    <select class="appearance-none block bg-gray-200 w-64 text-gray-700 border border-red-500 rounded mb-3 focus:outline-none focus:bg-white" id="Ist" type="text" >
                                             <option value="3rd P">3rd P</option>
                                             <option value="Kent">Ken</option>
                                             <option value="Drew">Drew</option>
@@ -209,11 +210,11 @@
                         </div>
                         <div class="grid grid-cols-2 gap-16 mb-6">
                             <div class="flex flex-wrap -mx-3 mb-2">
-                                <div class="w-full md:w-1/2 px-2  md:mb-0">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="second">
                                         2nd
                                     </label>
-                                    <select class="appearance-none block w-64 bg-gray-200 text-gray-700 border border-black-500 rounded mb-3  focus:outline-none focus:bg-white" id="second" type="text" >
+                                    <select class="appearance-none block w-64 bg-gray-200 text-gray-700 border border-red-500 rounded mb-3  focus:outline-none focus:bg-white" id="second" type="text" >
                                             <option value="3rd P">3rd P</option>
                                             <option value="Kent">Ken</option>
                                             <option value="Drew">Drew</option>
@@ -224,11 +225,11 @@
                                 </div>
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-2">
-                                <div class="w-full md:w-1/2 px-2  md:mb-0">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="third">
                                         3rd
                                     </label>
-                                    <select class="appearance-none block w-64 bg-gray-200 text-gray-700 border border-black-500 rounded mb-3  focus:outline-none focus:bg-white" id="third" type="text" >
+                                    <select class="appearance-none block w-64  bg-gray-200 text-gray-700 border border-red-500 rounded mb-3  focus:outline-none focus:bg-white" id="third" type="text" >
                                             <option value="3rd P">3rd P</option>
                                             <option value="Kent">Ken</option>
                                             <option value="Drew">Drew</option>
@@ -238,14 +239,13 @@
                                     </select>
                                 </div>
                             </div>   
-                        </div> 
+                        </div>  
                         <div class="flex flex-wrap -mx-3 mb-2">
-                            <div class="w-full md:w-1/2 px-2  md:mb-0">                    
+                            <div class="w-full md:w-1/2 px-3  md:mb-0">                   
                                 <input class="text-black bg-gray-300 mt-2 mb-3 w-64 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded " type="submit" value="Dispatch Selected Orders" />
                             </div>
                         </div>
-                    </form>
-                    
+                    </form>   
                 </div>
             {/if} 
         </div>
