@@ -15,13 +15,13 @@
     dispatch('message', {  
         text: values
         });
-        // console.log(values);
+        
     }
     // @ts-ignore
    
 </script>
 <div>
-    <fieldset class='p-3 border border-black mt-28'>
+    <fieldset class='p-3 border border-black mt-8'>
         <legend class="text-lg font-bold" >Map Options</legend>
             <p class="mb-1.5 "><span>Layers</span>
                 <input type="checkbox" id="drivers" class="ml-2 mr-2" checked/><label for="drivers">  Drivers </label>&nbsp;

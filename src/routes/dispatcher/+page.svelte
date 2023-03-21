@@ -6,6 +6,7 @@
     import MapExample from "../../components/Maps/MapExample.svelte";
     import DispatcherNavbar from "../../components/Navbars/DispatcherNavbar.svelte";
     import Header from "../../components/Headers/HeaderStats.svelte";
+    import Configure from "../../components/Configuration/Configure.svelte";
     import { setContext } from "svelte";
     export let data;
     let {products } = data;
@@ -20,11 +21,12 @@
     /**
      * @type {any[]}
      */
-    let orderDetail= [];
+    let orderDetail= [];  
     // @ts-ignore
     function detail(orderid){
         no = orderid;
         show= true;
+    
         // @ts-ignore
         for(let i=0;i<=data.products.length;i++)
         {
@@ -35,6 +37,12 @@
             }     
         }   
     }
+    function close(){
+        show= false;
+        var radioButton = document.getElementsByName("plan_choose");
+        for(var i=0;i<radioButton.length;i++)
+        radioButton[i].checked = false; 
+    }
     let show = false;
 </script>
     <Sidebar></Sidebar>
@@ -42,7 +50,8 @@
 		<DispatcherNavbar />
         <Header/>
 		<div class="px-4 md:px-10 mx-auto w-full -m-24">
-            <Filter on:message={handleMessage}/>   
+            <Configure/>
+            <Filter on:message={handleMessage}/>            
             <MapExample /> 
             <div class="mt-10">
                 <div>
@@ -65,9 +74,10 @@
                                         <tbody>
                                             {#if filter.length === 0}
                                                 {#each products as plans} 
-                                                    <tr class="border-bdark:border-neutral-500">                                          
-                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" ><input type="radio" value="" name="default-radio" class="select" id="selected" on:click={()=>{detail(plans.orderid)}}
-                                                            /></td>
+                                                    <tr class="border-bdark:border-neutral-500"> 
+                                                        <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" >
+                                                            <input type="radio" class="radio_btn" name="plan_choose" on:click={()=>{detail(plans.orderid)}}/>    
+                                                        </td>
                                                         <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
                                                             <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
                                                         </td>
@@ -84,7 +94,7 @@
                                                     {#each products as plans} 
                                                         {#if filters == plans.delivery}
                                                             <tr class="border-b dark:border-neutral-500">                                          
-                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="radio" value="" name="default-radio"  on:click={()=>{detail(plans.orderid)}} /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="radio" name="plan_choose" on:click={()=>{detail(plans.orderid)}} /></td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" id={plans.orderno}>
                                                                     <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
                                                                 </td>
@@ -94,7 +104,6 @@
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">$13.50</td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"> {plans.pickup_address.city}
                                                                 </td>
-                                                                                                                                -->
                                                             </tr>
                                                         {/if}     
                                                     {/each}
@@ -111,6 +120,14 @@
             {#if show}
                 <div class="p-8 mt-5">                  
                     <form class="w-full">
+                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 mb-2">
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal"
+                            on:click={()=>{close()}}>
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                       
                         <div class="grid grid-cols-2 gap-16 mb-6">
                             <div class="flex flex-wrap -mx-3 mb-2">
                                 <div class="w-full md:w-1/2 px-3  md:mb-0">
@@ -239,12 +256,12 @@
                                     </select>
                                 </div>
                             </div>   
-                        </div>  
-                        <div class="flex flex-wrap -mx-3 mb-2">
-                            <div class="w-full md:w-1/2 px-3  md:mb-0">                   
-                                <input class="text-black bg-gray-300 mt-2 mb-3 w-64 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded " type="submit" value="Dispatch Selected Orders" />
+                        </div> 
+                            <div class="flex flex-wrap -mx-3 mb-2">
+                                <div class="w-full md:w-1/2 px-3  md:mb-0">                   
+                                    <input class="text-black bg-gray-300 mt-2 mb-3 w-64 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded " type="submit" value="Dispatch Selected Orders" />
+                                </div>
                             </div>
-                        </div>
                     </form>   
                 </div>
             {/if} 
