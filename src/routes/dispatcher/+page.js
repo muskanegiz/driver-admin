@@ -1,5 +1,7 @@
 import { browser } from '$app/environment';
 import { env } from '$env/dynamic/public';
+export const prerender = false;
+
 let authToken = browser && localStorage.getItem("token");
 console.log("hloo:::: "+authToken);
 export const load = async ({fetch})=>{

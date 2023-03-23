@@ -124,6 +124,17 @@
              Dispatcher
           </a>
         </li>
+        <li class="items-center">
+          <a
+            href="/address"
+            class="text-xs uppercase py-3 font-bold block "
+          >
+            <i
+              class="fas fa-tv mr-2 text-sm "
+            ></i>
+              Address
+          </a>
+        </li>
       </ul>
     </div>
   </div>

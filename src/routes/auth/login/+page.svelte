@@ -115,7 +115,7 @@
                       on:change={handleChange}
                       on:blur={handleChange}
                       bind:value={$form.password}/>
-                      {#if $errors.email}
+                      {#if $errors.password}
                           <small class="text-center text-red-600 ">{$errors.password}</small>
                       {/if}
                     

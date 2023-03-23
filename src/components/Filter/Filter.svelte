@@ -1,6 +1,8 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
+    // @ts-ignore
+   
     function statusFilter() {
     var checkboxes = document.getElementsByName('filterValue');
     // @ts-ignore
@@ -14,26 +16,46 @@
     } 
     dispatch('message', {  
         text: values
-        });
-        
-    }
-    // @ts-ignore
+        });        
+    }  
    
+  // @ts-ignore
+  /**
+     * @type {string | any[]}
+     */
+  let values=[];
+    function MapFilter(){
+            // @ts-ignore
+            var mapboxes= document.getElementsByName("mapvalue");
+            var newvalue=[];
+            for(var i=0; mapboxes[i]; ++i){
+            // @ts-ignore
+                if(mapboxes[i].checked){
+                    // @ts-ignore
+                    newvalue.push(mapboxes[i].value);
+                    values=newvalue;
+
+                }
+            } 
+            dispatch('data', {  
+                mapvalue: newvalue
+            });        
+    }
 </script>
 <div>
     <fieldset class='p-3 border border-black mt-8'>
         <legend class="text-lg font-bold" >Map Options</legend>
             <p class="mb-1.5 "><span>Layers</span>
-                <input type="checkbox" id="drivers" class="ml-2 mr-2" checked/><label for="drivers">  Drivers </label>&nbsp;
-                <input type="checkbox" id="Driver" class="ml-2 mr-2" checked/><label for="Driver">  Driver Paths  </label>&nbsp;
-                <input type="checkbox" id="orders" class="ml-2 mr-2" checked><label for="orders">  Orders  </label>&nbsp;
+                <input type="checkbox" id="drivers" class="ml-2 mr-2" name="mapvalue"  value="in-progress" on:click={()=>{MapFilter()}}/><label for="drivers">  Drivers </label>&nbsp;
+                <input type="checkbox" id="pickup" class="ml-2 mr-2" name="mapvalue" value="in-progress-path" on:click={()=>{MapFilter()}}/><label for="Driver">  Driver Paths  </label>&nbsp;
+                <input type="checkbox" id="orders" class="ml-2 mr-2" name="mapvalue" value="pending" on:click={()=>{MapFilter()}}><label for="orders">  Orders  </label>&nbsp;
             </p>
             <hr class="border-black mb-2 w-full">
             <p class="mb-1.5 "><span>Show:</span>
-                <input type="checkbox" id="unassigned" name = "filterValue" value="unassign"  on:click={()=>{statusFilter()}} class="ml-2 mr-2"/><label for="unassigned">Unassigned</label>&nbsp;
-                <input type="checkbox" id="assigned" name = "filterValue"  value="assign" on:click={()=>{statusFilter()}}  class="ml-2 mr-2"/><label for="assigned">Assigned</label>&nbsp;
-                <input type="checkbox" id="in-progress" name = "filterValue"value="inprogress" on:click={()=>{statusFilter()}} class="ml-2 mr-2"><label for="in-progress">In Progress</label>&nbsp;
-                <input type="checkbox" id="completed" name = "filterValue" value="Y" on:click={()=>{statusFilter()}} class="ml-2 mr-2"><label for="completed">Completed</label>
+                <input type="checkbox" id="unassigned" name = "filterValue" value="pending"  on:click={()=>{statusFilter()}} class="ml-2 mr-2"/><label for="unassigned">Unassigned</label>&nbsp;
+                <input type="checkbox" id="assigned" name = "filterValue"  value="in-progress" on:click={()=>{statusFilter()}}  class="ml-2 mr-2"/><label for="assigned">Assigned</label>&nbsp;
+                <input type="checkbox" id="in-progress" name = "filterValue" value="picked-up" on:click={()=>{statusFilter()}} class="ml-2 mr-2"><label for="in-progress">In Progress</label>&nbsp;
+                <input type="checkbox" id="completed" name = "filterValue" value="delivered" on:click={()=>{statusFilter()}} class="ml-2 mr-2"><label for="completed">Completed</label>
             </p>    
     </fieldset>
 </div>
