@@ -3,11 +3,11 @@
   import { getContext } from "svelte";  
   const user = getContext("user");
   console.log(user.products);
-  console.log(user.products[1].status);
+  // console.log(user.products[1].status);
 
   
   onMount(async () => {
-            var center = {lat: 34.017951, lng: -118.493567};
+          var center = {lat:40.7010064, lng: -73.9434345};
             // @ts-ignore
             var locationsArr = [];
            
@@ -43,21 +43,6 @@
                   }
                 })(marker, count));
             }
-            // for (j = 0; j < driverArr.length; j++) {
-            //     marker = new google.maps.Marker({ 
-            //       position: new google.maps.LatLng(driverArr[j][0], driverArr[j][1]),
-            //       map: map,
-            //       title: driverArr[j][0]
-                  
-            //     });
-            //     google.maps.event.addListener(marker, 'click', (function (marker, j) {
-            //       return function () {
-            //         // @ts-ignore
-            //         infowindow.setContent(driverArr[j][0]);
-            //         infowindow.open(map, marker);
-            //       }
-            //     })(marker, j));
-            // }
           });
 </script>
 <div

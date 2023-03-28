@@ -43,12 +43,12 @@
     }
 </script>
 <div>
-    <fieldset class='p-3 border border-black mt-8'>
+    <fieldset class='p-3 border border-black mt-28'>
         <legend class="text-lg font-bold" >Map Options</legend>
             <p class="mb-1.5 "><span>Layers</span>
-                <input type="checkbox" id="drivers" class="ml-2 mr-2" name="mapvalue"  value="in-progress" on:click={()=>{MapFilter()}}/><label for="drivers">  Drivers </label>&nbsp;
-                <input type="checkbox" id="pickup" class="ml-2 mr-2" name="mapvalue" value="in-progress-path" on:click={()=>{MapFilter()}}/><label for="Driver">  Driver Paths  </label>&nbsp;
-                <input type="checkbox" id="orders" class="ml-2 mr-2" name="mapvalue" value="pending" on:click={()=>{MapFilter()}}><label for="orders">  Orders  </label>&nbsp;
+                <input type="radio" id="drivers" class="ml-2 mr-2" name="mapvalue"  value="in-progress" on:click={()=>{MapFilter()}}/><label for="drivers">  Drivers </label>&nbsp;
+                <input type="radio" id="pickup" class="ml-2 mr-2" name="mapvalue" value="in-progress-path" on:click={()=>{MapFilter()}}/><label for="Driver">  Driver Paths  </label>&nbsp;
+                <input type="radio" id="orders" class="ml-2 mr-2" name="mapvalue" value="all" on:click={()=>{MapFilter()}}><label for="orders">  Orders  </label>&nbsp;
             </p>
             <hr class="border-black mb-2 w-full">
             <p class="mb-1.5 "><span>Show:</span>

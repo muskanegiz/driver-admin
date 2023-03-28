@@ -6,7 +6,6 @@
     import MapExample from "../../components/Maps/MapExample.svelte";
     import DispatcherNavbar from "../../components/Navbars/DispatcherNavbar.svelte";
     import Header from "../../components/Headers/HeaderStats.svelte";
-    import Configure from "../../components/Configuration/Configure.svelte";
     import { setContext } from "svelte";
     export let data;
     let {products } = data;
@@ -21,24 +20,32 @@
     function handleData(event) {
         mapFilter = event.detail.mapvalue;
         console.log(mapFilter);
-        var center = {lat: 34.017951, lng: -118.493567};
+        var center = {lat: 39.737920, lng: -104.990694};
+        
             // @ts-ignore
             var locationsArr = [];
             for (let i = 0; i<data.products.length; i++) 
             {
-                if(mapFilter.includes(data.products[i].status) && mapFilter.includes("in-progress-path") == false) {
-                    if(data.products[i].status == "in-progress" ) {
-                        locationsArr[i] =[data.products[i].driver.latitude, data.products[i].driver.longitude];
-                    } else {
-                        locationsArr[i] =[data.products[i].latitude, data.products[i].longitude];
-                    }
-                } 
-                else if((mapFilter.includes("in-progress-path") == true) && data.products[i].status == "in-progress") {
-                    console.log("include in-progress-path");
-                    locationsArr[i] =[[data.products[i].latitude, data.products[i].longitude],
-                    [data.products[i].driver.latitude, data.products[i].driver.longitude]];
-                    locationsArr[i]['drive_path'] = 1;  
+                if(mapFilter.includes(data.products[i].status) ) {
+                    if(data.products[i].status == "in-progress" && data.products[i].driver != "null" ) {
+                       locationsArr[i] =[data.products[i].driver.latitude, data.products[i].driver.longitude];
+                       var center = {lat: 39.737920, lng: -104.990694};
+                    }     
                 }
+                else if( ( mapFilter.includes("all") == true)){
+                        locationsArr[i] =[data.products[i].latitude, data.products[i].longitude];
+                        var center = {lat:40.7010064, lng: -73.9434345};
+                    }
+               
+                else if(data.products[i].status == "in-progress" && data.products[i].driver !=null && ( mapFilter.includes("in-progress-path") == true) ) {
+                       console.log("driverrr_pathh");
+                       console.log(data.products[i].driver.latitude);
+                       console.log( data.products[i].driver.longitude);
+                       locationsArr[i] =[[data.products[i].latitude, data.products[i].longitude],
+                        [data.products[i].driver.latitude, data.products[i].driver.longitude]];
+                        locationsArr[i]['drive_path'] = 1;  
+                       console.log(locationsArr[i] ); 
+                    }
                 else {
                     locationsArr[i] = [];
                 }
@@ -53,26 +60,25 @@
             });
             var infowindow =  new google.maps.InfoWindow({});
             var marker, count;
-            for (count = 0; count < locationsArr.length; count++) {                
-                if(locationsArr['drive_path'] = 1)
+            for (count = 0; count < locationsArr.length; count++) {              
+                if(locationsArr[count]['drive_path'] == 1)
                 {
-                    for(let i= 0; i < locationsArr[count].length; i++) {
-                        var datas = locationsArr[count][i];
-                        console.log("ggggg",datas);
-                        marker = new google.maps.Marker({                    
-                        position: new google.maps.LatLng(locationsArr[count][i][0], locationsArr[count][i][1]),
-                        map: map,
-                        title: locationsArr[count][0] 
-                        });
-                        google.maps.event.addListener(marker, 'click', (function (marker, count) {
-                        return function () {
-                            // @ts-ignore
-                            infowindow.setContent(locationsArr[count][0]);
-                            infowindow.open(map, marker);
-                        }
-                        })(marker, count));
-                    }
-                        
+
+                            var end = new google.maps.LatLng(locationsArr[count][0][0],locationsArr[count][0][1]);
+                            var start = new google.maps.LatLng(locationsArr[count][1][0],locationsArr[count][1][1]);
+                            var display = new google.maps.DirectionsRenderer();
+                            var services = new google.maps.DirectionsService();
+                            display.setMap(map);
+                            var request ={
+                                origin : start,
+                                destination:end,
+                                travelMode: 'DRIVING'
+                            };
+                            services.route(request,function(result,status){
+                                if(status =='OK'){
+                                    display.setDirections(result);
+                                }
+                            });          
                 } else {
                     marker = new google.maps.Marker({                    
                     position: new google.maps.LatLng(locationsArr[count][0], locationsArr[count][1]),
@@ -121,7 +127,6 @@
 		<DispatcherNavbar />
         <Header/>
 		<div class="px-4 md:px-10 mx-auto w-full -m-24">
-            <Configure />
             <Filter on:message={handleMessage} on:data={handleData} /> 
             <MapExample/>
             <div class="mt-10">
@@ -149,7 +154,7 @@
                                                             <input type="radio" class="radio_btn" name="plan_choose" on:click={()=>{detail(plans.orderid)}}/>    
                                                         </td>
                                                         <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">
-                                                            <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
+                                                            <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderNo}</a>
                                                         </td>
                                                         <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
                                                         <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
@@ -163,8 +168,8 @@
                                                         {#if filters == plans.status}
                                                             <tr class="border-b dark:border-neutral-500">                                          
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]"><input type="radio" name="plan_choose" on:click={()=>{detail(plans.orderid)}} /></td>
-                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" id={plans.orderno}>
-                                                                    <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderno}</a>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]" id={plans.orderNo}>
+                                                                    <a href="https://moonshotdelivers.myshopify.com/admin/orders/5308973383841">{plans.orderNo}</a>
                                                                 </td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">{plans.createdon}</td>
                                                                 <td class="whitespace-nowrap px-3 py-2 text-black bg-[#ccfecb]">ASAP</td>
@@ -200,7 +205,7 @@
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                                         Order
                                     </label>
-                                    {orderDetail.orderno} 
+                                    {orderDetail.orderNo} 
                                 </div>
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-2">
@@ -245,11 +250,6 @@
                                     Loc
                                     </label>
                                     {orderDetail.pickup_address}
-                                    <!-- {#if orderDetail.pickup_address== null}
-                                        <h1>-------</h1>
-                                    {:else}
-                                        {orderDetail.pickup_address}
-                                    {/if} -->
                                 </div>
                             </div>
                         </div>                       
