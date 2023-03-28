@@ -2,10 +2,6 @@
   import { onMount } from "svelte";
   import { getContext } from "svelte";  
   const user = getContext("user");
-  console.log(user.products);
-  // console.log(user.products[1].status);
-
-  
   onMount(async () => {
           var center = {lat:40.7010064, lng: -73.9434345};
             // @ts-ignore
