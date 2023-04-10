@@ -1,6 +1,5 @@
 <script>
 // @ts-nocheck
-
     import Filter from "../../components/Filter/Filter.svelte";
     import Sidebar from "../../components/Sidebar/Sidebar.svelte";
     import MapExample from "../../components/Maps/MapExample.svelte";
@@ -9,6 +8,7 @@
     import { setContext } from "svelte";
     import { onMount } from "svelte";
     import { browser } from '$app/environment';
+    import { paginate, LightPaginationNav } from 'svelte-paginate'
     let authToken = browser && localStorage.getItem("token");
     let picked=[];
     onMount(async ()=> {
@@ -28,9 +28,11 @@
     setContext("user",data);
     let filter= "";
     var mapFilter="";
-    var dataCounter = "";         
-
-    
+    var dataCounter = "";    
+    let items = products;
+    let currentPage = 1
+    let pageSize = 10
+    $: paginatedItems = paginate({ items, pageSize, currentPage })           
     // @ts-ignore
     function handleMessage(event) {
         filter= event.detail.text
@@ -39,14 +41,14 @@
             // @ts-ignore
             var locationsArr = [];  
             for (let i = 0; i < data.products.length; i++) 
-            { 
-               
+            {            
                 if (filter.includes(data.products[i].status)) {
-                    dataCount++
+                    dataCount++;                   
                     if (data.products[i].status == "pending")
                     {
                         locationsArr[i] =[
-                        data.products[i].latitude,data.products[i].longitude]; 
+                        data.products[i].latitude,data.products[i].longitude];
+                        console.log(locationsArr[i] ); 
                     } else if(data.products[i].status == "delivered"){
                         locationsArr[i] =[
                         data.products[i].latitude,data.products[i].longitude]; 
@@ -164,6 +166,7 @@
                 }
             }
 	}  
+    
 </script>
     <Sidebar></Sidebar>
     <div class="relative md:ml-64 bg-blueGray-100">
@@ -185,191 +188,195 @@
                                             <table class="min-w-full text-left text-sm font-light" id="Table1">
                                                 <thead class="font-medium dark:border-neutral-500">
                                                     <tr class="text-black ">
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Select</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Order</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Placed</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Due</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Items</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Del+Tip</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Loc</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Market</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Mkt Tip</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Int Offer</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Delivery</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">1st</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">2nd</th>
-                                                    <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">3rd</th>
-                                                    <th scope="col" class="">
-                                                        <input class="text-black bg-gray-300 mt-3 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded" type="submit" value="Requote"/>
-                                                    </th>
-                                                </tr>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Select</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Order</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Placed</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Due</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Items</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Del+Tip</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Loc</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Market</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Mkt Tip</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Int Offer</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">Delivery</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">1st</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">2nd</th>
+                                                        <th scope="col" class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">3rd</th>
+                                                        <th scope="col" class="">
+                                                            <input class="text-black bg-gray-300 mt-3 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded" type="submit" value="Requote"/>
+                                                        </th>
+                                                    </tr>
                                                 </thead>
-                                              
-                                                    <tbody>
-                                                        {#if filter.length === 0}                                                        
-                                                            {#each products as plans} 
-                                                                <tr class="border-b dark:border-neutral-500">
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <input type="checkbox" class="radio_btn" name="plan_choose"/>   
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <a target="_blank" rel="noopener noreferrer" href="https://moonshotdelivers.myshopify.com/admin/orders/{plans.orderid}"> {plans.orderNo} </a>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">{plans.createdon}</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">ASAP</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">$30.00</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">$13.50</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <select name="pickupSource"> 
-                                                                            {#each picked as pick}
-                                                                            <option> {pick.name}</option>
-                                                                            {/each}                                                               
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">$13.25</td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        {#if plans.shipping_type == null}
-                                                                            <select name="shipping" class="w-24">
-                                                                                <option selected></option>
-                                                                                <option value="self">Self</option>
-                                                                                <option value="xpressrun">Xpressrun</option>
-                                                                            </select>
-                                                                        {:else}
+                                                <tbody>
+                                                    {#if filter.length === 0}                                                        
+                                                        {#each paginatedItems as plans} 
+                                                            <tr class="border-b dark:border-neutral-500">
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <input type="checkbox" class="radio_btn" name="plan_choose"/>   
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <a target="_blank" rel="noopener noreferrer" href="https://moonshotdelivers.myshopify.com/admin/orders/{plans.orderid}"> {plans.orderNo} </a>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">{plans.createdon}</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">ASAP</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$30.00</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$13.50</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <select name="pickupSource"> 
+                                                                        {#each picked as pick}
+                                                                        <option> {pick.name}</option>
+                                                                        {/each}                                                               
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$13.25</td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    {#if plans.shipping_type == null}
                                                                         <select name="shipping" class="w-24">
-                                                                            <option value="self" selected > Self</option>
+                                                                            <option selected></option>
+                                                                            <option value="self">Self</option>
+                                                                            <option value="xpressrun">Xpressrun</option>
                                                                         </select>
-                                                                        {/if}
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <select name="drive1-1">
-                                                                            <option value="3rd P" selected>3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <select name="drive1-2">
-                                                                            <option value="3rd P">3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                            <option value="None" selected>None</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <select name="drive1-3">
-                                                                            <option value="3rd P">3rd P</option>
-                                                                            <option value="Kent">Ken</option>
-                                                                            <option value="Drew">Drew</option>
-                                                                            <option value="MAC1">MAC1</option>
-                                                                            <option value="Pool">Pool</option>
-                                                                            <option value="None" selected>None</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                        <a href={"#"}><input type="checkbox" class="ml-6"/></a>
-                                                                    </td>
-                                                                </tr>
-                                                            {/each}
-                                                            {:else}
-                                                            {#if dataCounter > 0 }
-                                                                {#each filter as filters}
-                                                                    {#each products as plans} 
-                                                                        {#if filters == plans.status}
-                                                                            <tr class="border-b dark:border-neutral-500">
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <input type="checkbox" class="radio_btn" name="plan_choose"  
-                                                                                    /> 
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <a target="_blank" rel="noopener noreferrer" href="https://moonshotdelivers.myshopify.com/admin/orders/{plans.orderid}"> {plans.orderNo} </a>
-                                                                                        </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">{plans.createdon}</td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">ASAP</td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$30.00</td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$13.50</td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <select name="pickupSource"> 
-                                                                                        {#each picked as pick}
-                                                                                        <option> {pick.name}</option>
-                                                                                        {/each}                                                               
-                                                                                    </select>
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">$13.25</td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    {#if plans.shipping_type == null}
-                                                                                        <select name="shipping" class="w-24">
-                                                                                            <option selected></option>
-                                                                                            <option value="self">Self</option>
-                                                                                            <option value="xpressrun">Xpressrun</option>
-                                                                                        </select>
-                                                                                    {:else}
+                                                                    {:else}
+                                                                    <select name="shipping" class="w-24">
+                                                                        <option value="self" selected > Self</option>
+                                                                    </select>
+                                                                    {/if}
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <select name="drive1-1">
+                                                                        <option value="3rd P" selected>3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <select name="drive1-2">
+                                                                        <option value="3rd P">3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                        <option value="None" selected>None</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <select name="drive1-3">
+                                                                        <option value="3rd P">3rd P</option>
+                                                                        <option value="Kent">Ken</option>
+                                                                        <option value="Drew">Drew</option>
+                                                                        <option value="MAC1">MAC1</option>
+                                                                        <option value="Pool">Pool</option>
+                                                                        <option value="None" selected>None</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                    <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                                </td>
+                                                            </tr>
+                                                        {/each}
+                                                        {:else}
+                                                        {#if dataCounter > 0 }
+                                                            {#each filter as filters}
+                                                                {#each paginatedItems as plans} 
+                                                                    {#if filters == plans.status}
+                                                                        <tr class="border-b dark:border-neutral-500">
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <input type="checkbox" class="radio_btn" name="plan_choose"  
+                                                                                /> 
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <a target="_blank" rel="noopener noreferrer" href="https://moonshotdelivers.myshopify.com/admin/orders/{plans.orderid}"> {plans.orderNo} </a>
+                                                                                    </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">{plans.createdon}</td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">ASAP</td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">$30.00</td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">$13.50</td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <select name="pickupSource"> 
+                                                                                    {#each picked as pick}
+                                                                                    <option> {pick.name}</option>
+                                                                                    {/each}                                                               
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">$13.25</td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black "><input type="text" size="4" /></td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                {#if plans.shipping_type == null}
                                                                                     <select name="shipping" class="w-24">
-                                                                                        <option value="self" selected > Self</option>
+                                                                                        <option selected></option>
+                                                                                        <option value="self">Self</option>
+                                                                                        <option value="xpressrun">Xpressrun</option>
                                                                                     </select>
-                                                                                    {/if}
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <select name="drive1-1">
-                                                                                        <option value="3rd P" selected>3rd P</option>
-                                                                                        <option value="Kent">Ken</option>
-                                                                                        <option value="Drew">Drew</option>
-                                                                                        <option value="MAC1">MAC1</option>
-                                                                                        <option value="Pool">Pool</option>
-                                                                                    </select>
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <select name="drive1-2">
-                                                                                        <option value="3rd P">3rd P</option>
-                                                                                        <option value="Kent">Ken</option>
-                                                                                        <option value="Drew">Drew</option>
-                                                                                        <option value="MAC1">MAC1</option>
-                                                                                        <option value="Pool">Pool</option>
-                                                                                        <option value="None" selected>None</option>
-                                                                                    </select>
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <select name="drive1-3">
-                                                                                        <option value="3rd P">3rd P</option>
-                                                                                        <option value="Kent">Ken</option>
-                                                                                        <option value="Drew">Drew</option>
-                                                                                        <option value="MAC1">MAC1</option>
-                                                                                        <option value="Pool">Pool</option>
-                                                                                        <option value="None" selected>None</option>
-                                                                                    </select>
-                                                                                </td>
-                                                                                <td class="whitespace-nowrap px-3 py-2 text-black ">
-                                                                                    <a href={"#"}><input type="checkbox" class="ml-6"/></a>
-                                                                                </td>
-                                                                            </tr> 
-                                                                        
-                                                                        {/if}                                                                
-                                                                    {/each}    
-                                                                {/each}                                                       
-                                                                {:else}
-                                                                <tr><td colspan="16" style="font-weight:bold;font-size:20px;padding:10px 0px 0px 20px"> No record Found</td></tr>
-                                                            {/if}
+                                                                                {:else}
+                                                                                <select name="shipping" class="w-24">
+                                                                                    <option value="self" selected > Self</option>
+                                                                                </select>
+                                                                                {/if}
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <select name="drive1-1">
+                                                                                    <option value="3rd P" selected>3rd P</option>
+                                                                                    <option value="Kent">Ken</option>
+                                                                                    <option value="Drew">Drew</option>
+                                                                                    <option value="MAC1">MAC1</option>
+                                                                                    <option value="Pool">Pool</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <select name="drive1-2">
+                                                                                    <option value="3rd P">3rd P</option>
+                                                                                    <option value="Kent">Ken</option>
+                                                                                    <option value="Drew">Drew</option>
+                                                                                    <option value="MAC1">MAC1</option>
+                                                                                    <option value="Pool">Pool</option>
+                                                                                    <option value="None" selected>None</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <select name="drive1-3">
+                                                                                    <option value="3rd P">3rd P</option>
+                                                                                    <option value="Kent">Ken</option>
+                                                                                    <option value="Drew">Drew</option>
+                                                                                    <option value="MAC1">MAC1</option>
+                                                                                    <option value="Pool">Pool</option>
+                                                                                    <option value="None" selected>None</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="whitespace-nowrap px-3 py-2 text-black ">
+                                                                                <a href={"#"}><input type="checkbox" class="ml-6"/></a>
+                                                                            </td>
+                                                                        </tr> 
+                                                                    {/if}                                                                
+                                                                {/each}    
+                                                            {/each}                                                       
+                                                            {:else}
+                                                            <tr><td colspan="16" style="font-weight:bold;font-size:20px;padding:10px 0px 0px 20px"> No record Found</td></tr>
                                                         {/if}
-
-                                                    </tbody>
-                                               
+                                                    {/if}
+                                                </tbody>
                                                 <tr>
                                                     <td colspan="14" style="text-align:center;">
                                                         <input class="text-black bg-gray-300 mt-2 mb-3 border border-black hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded" type="submit" value="Dispatch Selected Orders" />
                                                     </td>
-                                                </tr>
-                                            </table>                                            
+                                                </tr>                                            
+                                            </table>                                                                                
                                         </div>
-                                    </div>
+                                    </div>                                 
                                 </div>
                             </div>
+                              <LightPaginationNav
+                                totalItems="{items.length}"
+                                pageSize="{pageSize}"
+                                currentPage="{currentPage}"
+                                limit="{1}"
+                                showStepOptions="{true}"
+                                on:setPage="{(e) => currentPage = e.detail.page}"
+                                /> 
                         </div>
                     </div> 
                 </div>      
